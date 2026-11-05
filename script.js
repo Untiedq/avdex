@@ -32,3 +32,29 @@
   });
 })();
 
+
+
+document.addEventListener("DOMContentLoaded", () => {
+  const form = document.querySelector("#feedback-form");
+  if (!form) return;
+
+  form.addEventListener("submit", (event) => {
+    event.preventDefault();
+    if (!form.reportValidity()) return;
+
+    const data = new FormData(form);
+    const subject = "Обращение с сайта AVDEX";
+    const body = [
+      "Имя: " + data.get("name"),
+      "Телефон: " + data.get("phone"),
+      "Электронная почта: " + data.get("email"),
+      "Вопрос: " + (data.get("message") || "не указан"),
+      "Согласие на обработку персональных данных: дано",
+      "",
+      "Политика обработки персональных данных: https://untiedq.github.io/avdex/personal-data.html"
+    ].join("\n");
+    const note = document.querySelector("#form-note");
+    if (note) note.textContent = "Откроется почтовое приложение. Проверьте письмо и нажмите «Отправить», чтобы передать данные AVDEX.";
+    window.location.href = "mailto:avdex@yandex.ru?subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(body);
+  });
+});
