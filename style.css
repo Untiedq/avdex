@@ -308,9 +308,14 @@ body {
 @media (max-width: 680px) { .dealer-brand-grid { grid-template-columns: 1fr; } .dealer-showcase { padding: 20px; } }
 
 
-/* Keep the About and color preparation cards static on hover. */
-#about .card:hover,
-.prep-guide .card:hover { border-color: var(--border); transform: none; }
+/* Keep the About and color preparation cards completely static. */
+#about .grid > .card,
+.prep-guide .guide-grid > .card { transition: none; }
+#about .grid > .card:hover,
+.prep-guide .guide-grid > .card:hover {
+  border-color: var(--border) !important;
+  transform: none !important;
+}
 
 /* AVDEX page refinements */
 .method-heading { display: flex; align-items: center; gap: 10px; min-height: 18px; }
