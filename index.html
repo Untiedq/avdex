@@ -12,7 +12,7 @@
   <meta property="og:url" content="https://untiedq.github.io/avdex/">
   <link rel="canonical" href="https://untiedq.github.io/avdex/">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%23ff6b1a'/%3E%3Ctext x='50' y='68' font-family='Arial' font-size='48' font-weight='bold' fill='%23fff' text-anchor='middle'%3EA%3C/text%3E%3C/svg%3E">
-  <link rel="stylesheet" href="style.css?v=static-about-guide-cards-2">
+  <link rel="stylesheet" href="style.css?v=feedback-form-1">
 </head>
 <body>
   <a class="skip-link" href="#main">Перейти к содержимому</a>
@@ -208,6 +208,35 @@
 
 
 
+  <section class="section" id="feedback">
+    <div class="container">
+      <h2 class="section-title">Обратная связь</h2>
+      <p class="section-sub">Оставьте контакты и задайте вопрос — мы свяжемся с вами.</p>
+      <div class="feedback-card">
+        <div class="feedback-copy">
+          <h3>Оставьте заявку</h3>
+          <p>Заполните поля и подтвердите согласие. Откроется ваше почтовое приложение с подготовленным письмом. Оно будет отправлено AVDEX только после вашего подтверждения в почтовом приложении.</p>
+        </div>
+        <form class="feedback-form" id="feedback-form">
+          <label for="feedback-name">Имя</label>
+          <input id="feedback-name" name="name" autocomplete="name" required maxlength="100">
+          <label for="feedback-phone">Телефон</label>
+          <input id="feedback-phone" name="phone" type="tel" autocomplete="tel" required maxlength="30">
+          <label for="feedback-email">Электронная почта</label>
+          <input id="feedback-email" name="email" type="email" autocomplete="email" required maxlength="254">
+          <label for="feedback-message">Ваш вопрос</label>
+          <textarea id="feedback-message" name="message" rows="4" maxlength="2000" placeholder="Опишите, чем мы можем помочь"></textarea>
+          <label class="consent-check">
+            <input type="checkbox" name="consent" required>
+            <span>Я даю согласие на обработку персональных данных на условиях <a href="consent.html" target="_blank" rel="noopener">отдельного согласия</a> и подтверждаю, что ознакомлен(а) с <a href="personal-data.html" target="_blank" rel="noopener">Политикой обработки персональных данных</a>.</span>
+          </label>
+          <button class="btn" type="submit">Подготовить письмо</button>
+          <p class="form-note" id="form-note" aria-live="polite">Данные не передаются на сервер сайта. Для отправки письма потребуется ваше подтверждение в почтовом приложении.</p>
+        </form>
+      </div>
+    </div>
+  </section>
+
   <section class="section" id="contacts">
     <div class="container">
       <h2 class="section-title">Контакты</h2>
@@ -278,6 +307,6 @@
   
   
   
-  <script src="script.js"></script>
+  <script src="script.js?v=feedback-form-1"></script>
 </body>
 </html>
