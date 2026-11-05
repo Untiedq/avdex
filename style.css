@@ -308,6 +308,10 @@ body {
 @media (max-width: 680px) { .dealer-brand-grid { grid-template-columns: 1fr; } .dealer-showcase { padding: 20px; } }
 
 
+/* Keep the About and color preparation cards static on hover. */
+#about .card:hover,
+.prep-guide .card:hover { border-color: var(--border); transform: none; }
+
 /* AVDEX page refinements */
 .method-heading { display: flex; align-items: center; gap: 10px; min-height: 18px; }
 .method-level { color: var(--text-muted); font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
