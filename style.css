@@ -352,3 +352,12 @@ body {
   .cookie-banner-actions { flex-direction: column; }
   .map-placeholder { min-height: 300px; padding: 22px; }
 }
+
+
+.cookie-banner-options { display: grid; flex-shrink: 0; gap: 12px; min-width: 220px; }
+.cookie-choice { display: flex; align-items: flex-start; gap: 9px; color: #e2e6e9; font-size: 13px; line-height: 1.5; cursor: pointer; }
+.cookie-choice input { flex: 0 0 auto; width: 17px; height: 17px; margin: 1px 0 0; accent-color: var(--accent); }
+.map-placeholder[hidden] { display: none !important; }
+@media (max-width: 680px) {
+  .cookie-banner-options { min-width: 0; }
+}
