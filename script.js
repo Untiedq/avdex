@@ -58,3 +58,75 @@ document.addEventListener("DOMContentLoaded", () => {
     window.location.href = "mailto:avdex@yandex.ru?subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(body);
   });
 });
+
+
+document.addEventListener("DOMContentLoaded", () => {
+  const banner = document.querySelector("#cookie-banner");
+  const frame = document.querySelector("#map-frame");
+  const mapButton = document.querySelector("#map-load-button");
+  const acceptButton = document.querySelector("#cookie-accept");
+  const rejectButton = document.querySelector("#cookie-reject");
+  const settingsButton = document.querySelector("#cookie-settings");
+  if (!banner || !frame) return;
+
+  const consentKey = "avdex-map-consent";
+  const mapTitle = "Яндекс Карты: AVDEX, Нижний Новгород, ул. Новикова-Прибоя, 4, корп. 6";
+  const mapUrl = "https://yandex.ru/map-widget/v1/?z=17&ol=biz&oid=193976392465";
+
+  const getChoice = () => {
+    try {
+      return window.localStorage.getItem(consentKey);
+    } catch (_) {
+      return null;
+    }
+  };
+
+  const saveChoice = (choice) => {
+    try {
+      window.localStorage.setItem(consentKey, choice);
+    } catch (_) {
+      // The current choice still applies for this page view if storage is unavailable.
+    }
+  };
+
+  const loadMap = () => {
+    if (frame.querySelector("iframe")) return;
+    const iframe = document.createElement("iframe");
+    iframe.src = mapUrl;
+    iframe.title = mapTitle;
+    iframe.loading = "eager";
+    iframe.referrerPolicy = "strict-origin-when-cross-origin";
+    iframe.allowFullscreen = true;
+    frame.replaceChildren(iframe);
+  };
+
+  const showBanner = () => {
+    banner.hidden = false;
+    acceptButton?.focus();
+  };
+
+  const hideBanner = () => {
+    banner.hidden = true;
+  };
+
+  acceptButton?.addEventListener("click", () => {
+    saveChoice("accepted");
+    loadMap();
+    hideBanner();
+  });
+
+  rejectButton?.addEventListener("click", () => {
+    saveChoice("rejected");
+    frame.querySelector("iframe")?.remove();
+    hideBanner();
+  });
+
+  mapButton?.addEventListener("click", showBanner);
+  settingsButton?.addEventListener("click", showBanner);
+
+  if (getChoice() === "accepted") {
+    loadMap();
+  } else if (getChoice() !== "rejected") {
+    showBanner();
+  }
+});
