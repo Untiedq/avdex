@@ -63,27 +63,32 @@ document.addEventListener("DOMContentLoaded", () => {
 document.addEventListener("DOMContentLoaded", () => {
   const banner = document.querySelector("#cookie-banner");
   const frame = document.querySelector("#map-frame");
+  const placeholder = document.querySelector("#map-placeholder");
   const mapButton = document.querySelector("#map-load-button");
-  const acceptButton = document.querySelector("#cookie-accept");
+  const mapCheckbox = document.querySelector("#cookie-map-consent");
+  const metricaCheckbox = document.querySelector("#cookie-metrica-consent");
+  const saveButton = document.querySelector("#cookie-save");
   const rejectButton = document.querySelector("#cookie-reject");
   const settingsButton = document.querySelector("#cookie-settings");
-  if (!banner || !frame) return;
+  if (!banner || !frame || !placeholder || !mapCheckbox || !metricaCheckbox) return;
 
-  const consentKey = "avdex-map-consent";
+  const metricaId = 114113321;
+  const mapConsentKey = "avdex-map-consent";
+  const metricaConsentKey = "avdex-metrica-consent";
   const mapTitle = "Яндекс Карты: AVDEX, Нижний Новгород, ул. Новикова-Прибоя, 4, корп. 6";
   const mapUrl = "https://yandex.ru/map-widget/v1/?z=17&ol=biz&oid=193976392465";
 
-  const getChoice = () => {
+  const getChoice = (key) => {
     try {
-      return window.localStorage.getItem(consentKey);
+      return window.localStorage.getItem(key);
     } catch (_) {
       return null;
     }
   };
 
-  const saveChoice = (choice) => {
+  const saveChoice = (key, choice) => {
     try {
-      window.localStorage.setItem(consentKey, choice);
+      window.localStorage.setItem(key, choice);
     } catch (_) {
       // The current choice still applies for this page view if storage is unavailable.
     }
@@ -97,36 +102,101 @@ document.addEventListener("DOMContentLoaded", () => {
     iframe.loading = "eager";
     iframe.referrerPolicy = "strict-origin-when-cross-origin";
     iframe.allowFullscreen = true;
-    frame.replaceChildren(iframe);
+    placeholder.hidden = true;
+    frame.appendChild(iframe);
   };
 
-  const showBanner = () => {
+  const removeMap = () => {
+    frame.querySelector("iframe")?.remove();
+    placeholder.hidden = false;
+  };
+
+  const loadMetrica = () => {
+    if (window.__avdexMetricaLoaded) return;
+    window["disableYaCounter" + metricaId] = false;
+    window.ym = window.ym || function () {
+      (window.ym.a = window.ym.a || []).push(arguments);
+    };
+    window.ym.l = window.ym.l || Date.now();
+
+    const script = document.createElement("script");
+    const firstScript = document.getElementsByTagName("script")[0];
+    script.async = true;
+    script.src = "https://mc.yandex.ru/metrika/tag.js";
+    firstScript.parentNode.insertBefore(script, firstScript);
+
+    window.ym(metricaId, "init", {
+      clickmap: true,
+      trackLinks: true,
+      accurateTrackBounce: true,
+      webvisor: false
+    });
+    window.__avdexMetricaLoaded = true;
+  };
+
+  const syncCheckboxes = () => {
+    mapCheckbox.checked = getChoice(mapConsentKey) === "accepted";
+    metricaCheckbox.checked = getChoice(metricaConsentKey) === "accepted";
+  };
+
+  const showBanner = (selectMap = false) => {
+    syncCheckboxes();
+    if (selectMap) mapCheckbox.checked = true;
     banner.hidden = false;
-    acceptButton?.focus();
+    saveButton?.focus();
   };
 
   const hideBanner = () => {
     banner.hidden = true;
   };
 
-  acceptButton?.addEventListener("click", () => {
-    saveChoice("accepted");
-    loadMap();
+  const savePreferences = () => {
+    const oldMetricaChoice = getChoice(metricaConsentKey);
+    const allowMap = mapCheckbox.checked;
+    const allowMetrica = metricaCheckbox.checked;
+
+    saveChoice(mapConsentKey, allowMap ? "accepted" : "rejected");
+    saveChoice(metricaConsentKey, allowMetrica ? "accepted" : "rejected");
+
+    if (allowMap) loadMap();
+    else removeMap();
+
+    if (allowMetrica) {
+      loadMetrica();
+    } else if (oldMetricaChoice === "accepted") {
+      window["disableYaCounter" + metricaId] = true;
+      window.location.reload();
+      return;
+    }
+
     hideBanner();
-  });
+  };
+
+  saveButton?.addEventListener("click", savePreferences);
 
   rejectButton?.addEventListener("click", () => {
-    saveChoice("rejected");
-    frame.querySelector("iframe")?.remove();
+    const oldMetricaChoice = getChoice(metricaConsentKey);
+    mapCheckbox.checked = false;
+    metricaCheckbox.checked = false;
+    saveChoice(mapConsentKey, "rejected");
+    saveChoice(metricaConsentKey, "rejected");
+    removeMap();
+
+    if (oldMetricaChoice === "accepted") {
+      window["disableYaCounter" + metricaId] = true;
+      window.location.reload();
+      return;
+    }
     hideBanner();
   });
 
-  mapButton?.addEventListener("click", showBanner);
-  settingsButton?.addEventListener("click", showBanner);
+  mapButton?.addEventListener("click", () => showBanner(true));
+  settingsButton?.addEventListener("click", () => showBanner());
 
-  if (getChoice() === "accepted") {
-    loadMap();
-  } else if (getChoice() !== "rejected") {
-    showBanner();
-  }
+  const mapChoice = getChoice(mapConsentKey);
+  const metricaChoice = getChoice(metricaConsentKey);
+  if (mapChoice === "accepted") loadMap();
+  if (metricaChoice === "accepted") loadMetrica();
+
+  if (mapChoice === null || metricaChoice === null) showBanner();
 });
