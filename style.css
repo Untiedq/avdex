@@ -329,3 +329,26 @@ body {
 .privacy-main .policy-measures { margin: 12px 0 20px; padding-left: 22px; list-style: disc; }
 .privacy-main .policy-measures li { margin: 0 0 9px; padding-left: 4px; }
 .privacy-main .policy-measures li:last-child { margin-bottom: 0; }
+
+
+/* Optional map consent */
+.map-placeholder { display: flex; min-height: 330px; flex-direction: column; align-items: center; justify-content: center; gap: 18px; padding: 28px; text-align: center; color: var(--text-muted); }
+.map-placeholder p { max-width: 560px; margin: 0; font-size: 14px; line-height: 1.7; }
+.cookie-banner[hidden] { display: none !important; }
+.cookie-banner { position: fixed; z-index: 1200; right: 20px; bottom: 20px; left: 20px; display: flex; max-width: 1040px; margin: 0 auto; align-items: center; justify-content: space-between; gap: 24px; padding: 22px 24px; border: 1px solid var(--border); border-top: 3px solid var(--accent); border-radius: 12px; background: #171e24; box-shadow: 0 12px 40px rgba(0,0,0,.45); }
+.cookie-banner-copy { max-width: 650px; }
+.cookie-banner h2 { margin: 0 0 7px; color: var(--text); font-size: 18px; }
+.cookie-banner p { margin: 0 0 8px; color: #c1c8cd; font-size: 13px; line-height: 1.6; }
+.cookie-banner a { color: #fff; font-size: 13px; text-underline-offset: 3px; }
+.cookie-banner a:hover { color: var(--accent-hover); }
+.cookie-banner-actions { display: flex; flex-shrink: 0; flex-direction: column; align-items: stretch; gap: 10px; }
+.cookie-banner-actions .btn, .cookie-banner-actions .btn-secondary { min-height: 42px; padding: 10px 14px; cursor: pointer; font: inherit; font-size: 13px; font-weight: 700; text-align: center; }
+.cookie-banner-actions .btn-secondary { border: 1px solid var(--border); border-radius: 6px; background: transparent; color: var(--text); }
+.cookie-banner-actions .btn-secondary:hover { border-color: var(--accent); color: var(--accent-hover); }
+.cookie-settings-button { padding: 0; border: 0; background: none; color: #fff; font: inherit; text-decoration: underline; text-decoration-color: rgba(255,255,255,.5); text-underline-offset: 3px; cursor: pointer; }
+.cookie-settings-button:hover { color: var(--accent-hover); }
+@media (max-width: 680px) {
+  .cookie-banner { right: 10px; bottom: 10px; left: 10px; flex-direction: column; align-items: stretch; gap: 15px; padding: 18px; }
+  .cookie-banner-actions { flex-direction: column; }
+  .map-placeholder { min-height: 300px; padding: 22px; }
+}
