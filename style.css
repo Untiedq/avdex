@@ -363,7 +363,6 @@ body {
 }
 
 
-.equipment-service { margin-top: 48px; padding-top: 34px; border-top: 1px solid var(--border); }
 .equipment-service .section-title { margin-bottom: 8px; font-size: clamp(21px,2.4vw,28px); }
 .equipment-service .section-sub { margin-bottom: 22px; font-size: 15px; }
 .equipment-service-grid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 16px; align-items: stretch; }
