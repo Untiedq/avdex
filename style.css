@@ -363,3 +363,9 @@ body {
 }
 
 
+
+
+.equipment-service-list p { margin: 0; color: var(--text-muted); font-size: 15px; }
+.equipment-service-list p + p { margin-top: 12px; }
+.paint-service-extra { margin: -10px 0 0; color: var(--text-muted); font-size: 15px; }
+.paint-service-extra strong { color: var(--accent); }
